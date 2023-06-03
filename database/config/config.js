@@ -10,12 +10,12 @@ module.exports = {
     port :  process.env.DB_PORT
   },
   test: {
-    username:"sql10614126",
-    password:"NqrH3Ryypr",
-    database:"sql10614126",
-    host:"sql10.freemysqlhosting.net",
+   username: process.env.DB_USERNAME_TEST,
+    password: process.env.DB_PASSWORD_TEST,
+    database: process.env.DB_DATABASE_TEST,
+    host:  process.env.DB_HOST_TEST,
     dialect:"mysql",
-    port :3306
+    port :  process.env.DB_PORT_TEST
   },
   production: {
     username: "root",

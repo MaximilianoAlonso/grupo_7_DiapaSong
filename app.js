@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const methodOverride = require('method-override');
 const session = require('express-session');
+const cors = require("cors");
+
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -13,6 +15,11 @@ const productsRouter = require('./routes/products');
 const ticketsRouter = require('./routes/tickets');
 const localsUserCheck = require('./middlewares/localsUserCheck');
 const cookieCheck = require("./middlewares/cookieCheck");
+//APIS
+const productsApiRouter = require('./routes/apis/productsApi');
+const apiUserRouter = require('./routes/apis/users');
+const apiMainRouter = require('./routes/apis/mainApi');
+const apiCatogoryRouter = require('./routes/apis/categories');
 
 const app = express();
 
@@ -32,6 +39,7 @@ app
   resave: false,
   saveUninitialized: true
 }))
+.use(cors())
 .use(cookieCheck) //cargo en session lo que hay en la cookie
 .use(localsUserCheck) //cargo en locals lo que hay en session
 .use((req,res,next) => {
@@ -45,6 +53,11 @@ app.use('/users', usersRouter);
 app.use('/products', productsRouter);
 app.use('/tickets', ticketsRouter);
 
+//RUTAS APIs
+app.use("/api", apiMainRouter)
+app.use('/api/products', productsApiRouter);
+app.use('/api/users', apiUserRouter);
+app.use('/api/categories',apiCatogoryRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

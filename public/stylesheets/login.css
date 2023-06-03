@@ -53,7 +53,9 @@
 }
 
 .login__formbox--btn-box button {}
-
+.login__formbox--btn-box{
+    gap: 8px;
+}
 .btn--login,
 .btn--register {
     background-color: rgb(243 238 238);
@@ -74,6 +76,14 @@
     font-size: large;
     text-decoration: none;
     color:#000000
+}
+
+.login__main__section .login__formbox div .is-invalid{
+    border: 2px rgb(233, 53, 53) solid;
+       
+}
+.login__main__section .login__formbox div .is-valid{
+    border: 2px rgb(0, 255, 128) solid;
 }
 
 /* TABLET */
