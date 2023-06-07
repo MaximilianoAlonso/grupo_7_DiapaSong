@@ -21,18 +21,18 @@
         <section class="header__section--user-navigation">
         <a href="/users/login"><i class="fa-solid fa-user"></i></a>
         <% } %>
-        <a href="/productCart"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a class="cart-icon" href="/productCart"><i class="fa-solid fa-cart-shopping"></i></a>
         <a class="header_redes" href="#"><i class="fa-brands fa-facebook"></i></a>
         <a class="header_redes" href="#"><i class="fa-brands fa-instagram"></i></a>
     </section>
     <!-- Buscador -->
     <form class="header--search-bar" action="/search" method="GET">
         <input type="text" name="keywords" placeholder=" ¿Que buscas?" id="search-bar">
-        <a class="lupa" href="/search"><i class="fa-solid fa-magnifying-glass search-icon"></i></a>
+        <button class="lupa" ><i class="fa-solid fa-magnifying-glass search-icon"></i></button>
     </form>
     <!-- Icono Whatsap -->
     <div class="header--whatsapp-icon">
-        <a href="https://wa.me/1159143248?text=Ingresa%20tu%20consulta"><i class="fa-solid fa-phone"></i><span class="Whatsapp-text">Whatsapp</span></a>
+        <a href="https://api.whatsapp.com/send/?phone=1159143248"><i class="fa-solid fa-phone"></i><span class="Whatsapp-text">Whatsapp</span></a>
 
 
     </div>
@@ -48,3 +48,6 @@
         </ul>
     </nav>
 </header>
+<div class="arriba-mobile">
+    <i id="boton-arriba" class="fa-solid fa-arrow-up"></i>
+     </div>
