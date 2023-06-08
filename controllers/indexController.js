@@ -10,6 +10,8 @@ const Op = db.Sequelize.Op
 
 module.exports ={
    index: (req,res) =>{
+        const sale= db.Sale.findAll()
+        
         const saleProducts = db.Product.findAll({
             where: {
                 discount: {
@@ -36,13 +38,20 @@ module.exports ={
             ]
       
       })
-      Promise.all([saleProducts, featured])
-        .then(([saleProducts,featured])=>{
+      Promise.all([saleProducts, featured, sale])
+        .then(([saleProducts,featured, sale])=>{
+            const idSale=sale.length
+            res.cookie('idSale',idSale,{
+              maxAge: 24 * 60 * 60 * 1000,
+              httpOnly: true
+            })
             // return res.send(saleProducts)
+            console.log(sale.length);
             return res.render('index', {
                 saleProducts,
                 related : req.session.userLogin ? req.session.userLogin.related : featured,
                 title: "HOME"
+                
             });
         })
         .catch((error) => console.log(error));
@@ -74,11 +83,6 @@ module.exports ={
                 })
             })
             .catch((error) => console.log(error))     
-    },
-    productCart: (req,res) =>{
-        return res.render('productCart',{
-            title:"Carrito"
-        });
     },
     blog: (req, res) => {
         db.Blog.findAll()
@@ -113,5 +117,88 @@ module.exports ={
         return res.render('faq',{
             title: 'Preguntas Frecuentes'
         })
+    },  dashboard: (req, res) => {
+      /* 
+      BUSCO TODOS LOS PRODUCTOS Y SE INCLUYEN LAS CATEGRIAS, COLORES, CONDICIONES, TIPO DE PRODUCTOS, CARRITO Y LAS IMAGENES PRINCIPALES        
+      */
+      const productsAll = db.Product.findAll({
+        /* order:[["createdAt",'DESC']], */
+        include: [
+          "categories",
+          "colors",
+          "condition",
+          "productType",
+          {
+            model: db.Image,
+            as: "images",
+            where: { main: 1 },
+          },
+          "carts",
+        ],
+      });
+      const productsNew = db.Product.findAll({
+        order:[["createdAt",'DESC']],
+        include: [
+          "categories",
+          "colors",
+          "condition",
+          "productType",
+          {
+            model: db.Image,
+            as: "images",
+            where: { main: 1 },
+          },
+          "carts",
+        ],
+        limit: 5
+      });
+      Promise.all([productsAll, productsNew])
+      .then(([productsAll, productsNew]) => {
+          // return res.send(productsNew)
+          const CategoryFilt = req.params.category;
+          const products = productsAll
+          const product = productsAll.filter(
+            (product) =>
+              product.categories
+                ? product.categories.category === CategoryFilt
+                : false /* product.categories.category?  */
+          );
+          if(CategoryFilt=='novedades'){
+            const product = productsNew
+            return res.render("products", {
+              product,
+              toThousand,
+              CategoryFilt,
+              title: "Productos",
+              /* products, */
+            });
+          }
+          // return res.send(/*CategoryFilt products filteredImages */products)
+          return res.render("dashboard", {
+            product,
+            toThousand,
+            CategoryFilt,
+            title: "Admin Dashboard",
+            products,
+          });
+        })
+        .catch((error) => console.log(error));
+    },
+    removeProduct: async (req, res) => {
+      const id = req.params.id;
+  
+      try {
+        const product = await db.Product.findByPk(id);
+        const images = await db.Image.findAll({
+          where: { idProduct: product.id },
+        });
+        await Promise.all(images.map((image) => image.destroy()));
+  
+        product.destroy(); // Eliminar el producto y la imagen
+  
+        return res.redirect("/dashboard");
+      } catch (error) {
+        console.error(error);
+      }
     }
 }
