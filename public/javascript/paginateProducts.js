@@ -4,7 +4,7 @@ const btnNext = $("#btn-next");
 const containerItemsPages = $("#container-items-page");
 const containerProducts = $("#container-products");
 
-const apiGetProducts = "http://localhost:3000/api/products";
+const apiGetProducts = "https://diapasong.onrender.com/api/products";
 
 let pageActive=1;
 /* fetch */

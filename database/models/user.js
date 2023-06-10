@@ -16,17 +16,31 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "rolId",
         onDelete: "cascade",
       });
-      User.hasMany(models.UserGenre, {
+     /*  User.hasMany(models.UserGenre, {
         as: "genre",
         foreignKey: "userId",
         onDelete: "cascade",
-      });
+      }); */
+      User.belongsToMany(models.Genre, {
+        as : 'genres',
+        through : 'usergenres',
+        foreignKey : 'userId',
+        otherKey : 'genreId'
+      })
 
-      User.hasMany(models.UserInstrument, {
+/*       User.hasMany(models.UserInstrument, {
         as: "instrument",
         foreignKey: "userId",
         onDelete: "cascade",
-      });
+      }); */
+
+      User.belongsToMany(models.Instrument, {
+        as : 'instruments',
+        through : 'userinstruments',
+        foreignKey : 'userId',
+        otherKey : 'instrumentId'
+      })
+
       User.hasMany(models.PaymentMethodUser, {
         as: "paymentMethod",
         foreignKey: "paymentMethodId",
@@ -37,6 +51,8 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     name: DataTypes.STRING,
     profileImage: DataTypes.STRING,
+    socialId :DataTypes.STRING,
+    socialProvider :DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     identifyId: DataTypes.INTEGER,
@@ -44,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
     phone: DataTypes.INTEGER,
     news: DataTypes.BOOLEAN,
     /* terms: DataTypes.INTEGER, */
-    rolId: DataTypes.INTEGER
+    rolId: {type:DataTypes.INTEGER, defaultValue: 2}
   }, {
     sequelize,
     modelName: 'User',

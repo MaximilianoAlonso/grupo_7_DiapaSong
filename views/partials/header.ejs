@@ -14,25 +14,28 @@
         <% if (locals.userLogin) { %>
             <section class="header__section--user-navigation-logged">
             <div>
-            <a href="/users/profile">Hola <%= userLogin.name.split(" ")[0]  %><i class="fa-regular fa-user"></i></a>
+            <a href="/users/profile">Hola <%= userLogin.name.split(" ")[0]  %><% if (locals.userLogin && locals.userLogin.rol == 1) { %>
+                <i class="fa-solid fa-chart-column"></i> <a href="http://localhost:5173/"><i style="color: beige;font-weight: 900;text-shadow: 0px 0px 3px white;" class="fa-brands fa-react"></i></a><% } else { %>
+                 <i class="fa-regular fa-user"></i>
+            <% } %></a>
             <a href="/users/logOut">Salir<i class="fa-solid fa-xmark"></i></a>
             </div>
         <% }else{ %>
         <section class="header__section--user-navigation">
         <a href="/users/login"><i class="fa-solid fa-user"></i></a>
         <% } %>
-        <a href="/productCart"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a class="cart-icon" href="/productCart"><i class="fa-solid fa-cart-shopping"></i></a>
         <a class="header_redes" href="#"><i class="fa-brands fa-facebook"></i></a>
         <a class="header_redes" href="#"><i class="fa-brands fa-instagram"></i></a>
     </section>
     <!-- Buscador -->
     <form class="header--search-bar" action="/search" method="GET">
         <input type="text" name="keywords" placeholder=" ¿Que buscas?" id="search-bar">
-        <a class="lupa" href="/search"><i class="fa-solid fa-magnifying-glass search-icon"></i></a>
+        <button class="lupa" ><i class="fa-solid fa-magnifying-glass search-icon"></i></button>
     </form>
     <!-- Icono Whatsap -->
     <div class="header--whatsapp-icon">
-        <a href="https://wa.me/1159143248?text=Ingresa%20tu%20consulta"><i class="fa-solid fa-phone"></i><span class="Whatsapp-text">Whatsapp</span></a>
+        <a href="https://api.whatsapp.com/send/?phone=1159143248"><i class="fa-solid fa-phone"></i><span class="Whatsapp-text">Whatsapp</span></a>
 
 
     </div>
@@ -42,9 +45,12 @@
         <ul>
             <li class="productos_btn"><a href="/products">Productos</a></li>
             <li class="blob_btn"><a href="/blog">Blog</a></li>
-            <li class="entradas_btn"><a href="/tickets">Entradas</a></li>
+            <li class="entradas_btn" hidden><a href="/tickets">Entradas</a></li>
             <li class="envios_btn"><a href="/#about">Quienes somos!</a></li>
             <li class="faq_btn"><a href="/faq">Faq</a></li>
         </ul>
     </nav>
 </header>
+<div class="arriba-mobile">
+    <i id="boton-arriba" class="fa-solid fa-arrow-up"></i>
+     </div>

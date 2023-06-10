@@ -6,11 +6,17 @@ const product = require("../database/models/product");
 const Op = db.Sequelize.Op
 
 module.exports = {
+  spinnerProduct: (req,res)=>{
+    return res.render('spinnerProduct',{
+      title: 'Productos'
+    })
+  },
   products: (req, res) => {
     /* 
     BUSCO TODOS LOS PRODUCTOS Y SE INCLUYEN LAS CATEGRIAS, COLORES, CONDICIONES, TIPO DE PRODUCTOS, CARRITO Y LAS IMAGENES PRINCIPALES        
     */
-    db.Product.findAll({
+    const productsAll = db.Product.findAll({
+      /* order:[["createdAt",'DESC']], */
       include: [
         "categories",
         "colors",
@@ -23,16 +29,44 @@ module.exports = {
         },
         "carts",
       ],
-    })
-
-      .then((products) => {
+    });
+    const productsNew = db.Product.findAll({
+      order:[["createdAt",'DESC']],
+      include: [
+        "categories",
+        "colors",
+        "condition",
+        "productType",
+        {
+          model: db.Image,
+          as: "images",
+          where: { main: 1 },
+        },
+        "carts",
+      ],
+      limit: 5
+    });
+    Promise.all([productsAll, productsNew])
+    .then(([productsAll, productsNew]) => {
+        // return res.send(productsNew)
         const CategoryFilt = req.params.category;
-        const product = products.filter(
+        const products = productsAll
+        const product = productsAll.filter(
           (product) =>
             product.categories
               ? product.categories.category === CategoryFilt
               : false /* product.categories.category?  */
         );
+        if(CategoryFilt=='novedades'){
+          const product = productsNew
+          return res.render("products", {
+            product,
+            toThousand,
+            CategoryFilt,
+            title: "Productos",
+            /* products, */
+          });
+        }
         // return res.send(/*CategoryFilt products filteredImages */products)
         return res.render("products", {
           product,
@@ -167,7 +201,7 @@ module.exports = {
         })
         .then(() => {
           // return res.send(/*req.body errors product */req.files)
-          return res.redirect("/products");
+          return res.redirect("/products/spinner");
         })
         .catch((error) => console.log(error));
     } else {
@@ -310,7 +344,7 @@ module.exports = {
         }
 
         //return res.send(req.files) return res.redirect(`/products/detail/${id}`);
-        return res.redirect(`/`);
+        return res.redirect(`/products/spinner`);
       }
       // SI NO VIENEN IMAGENES POR INPUTS SE PUEDE CAMBIAR CUAL ES LA IMAGEN PRINCIPAL DESDE LAS VISTAS PREVIAS DEL INPUT TIPO RADIO(PREVIEW)
     const imagesUpdate = db.Image.update({
@@ -329,7 +363,7 @@ module.exports = {
     Promise.all([productUpdated, imagesUpdate, /* product */])
       .then(([productUpdated, imagesUpdate, /* product */]) => {
         // return res.send(/*body errors req. req.fileValidationError res.locals  product imagesUpdate imagesUpdate*/req.files)
-        return res.redirect(`/`);
+        return res.redirect(`/products/spinner`);
       })
       .catch((error) => console.log(error));
     } else {

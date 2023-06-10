@@ -3,10 +3,12 @@ const createResponseError = require("../../helpers/createResponseErrors");
 const {
   getAllProducts,
   getOneProduct,
+  getCountProducts,
   createProduct,
 /*   createImageProduct, */
   updateProduct,
   destroyProduct,
+  getLastProducts,
 } = require("../../services/productsServices");
 
 module.exports = {
@@ -46,7 +48,7 @@ module.exports = {
           .json({ status: 400, message: "La página que buscas no existe" });
       }
 
-      const totalPages = Math.ceil(count / limit);
+      const totalPages = Math.ceil(count / limit) -1;
 
       return res.status(200).json({
         ok: true,
@@ -54,11 +56,38 @@ module.exports = {
         prevPageUrl,
         page,
         totalPages,
-
-        data: { count, products, page, totalPages },
+            
+        data: { count: count - 5, products, page, totalPages },
 
         meta: {
+          count,
           page,
+          status: 200,
+          total: products.length,
+          url: "/api/products",
+        },
+      });
+    } catch (error) {
+      return createResponseError(res, error);
+    }
+  },
+  lastProduct: async (req, res) => {
+  
+    try {
+      const /* products */ { count, products } = await getLastProducts(
+          /**/ req
+        );
+      //Math.ceil(count / limit) lo uso para redondear el numero siguiente en la division de cantidad (count) y el limite (limit) de registros que quiero mostrar por pagina, lo tuve que usar para que me muestre la ultima pagina si queda un resto mayor que 0 y menor al limite y si no hay mas no la muestra
+      
+
+      return res.status(200).json({
+        ok: true,
+              
+        data: {  products},
+
+        meta: {
+          count,
+          
           status: 200,
           total: products.length,
           url: "/api/products",
@@ -98,7 +127,7 @@ module.exports = {
             },
             meta : {
                 status: 200,
-                total : 1,
+                total : 1,  
                 url : `/api/products/`
             },
         })

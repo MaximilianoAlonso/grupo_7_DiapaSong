@@ -1,7 +1,7 @@
 const { check, body } = require('express-validator');
 const users = require('../data/users.json');
 const db = require('../database/models')
-let regExPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&,._-])[A-Za-z\d$@$!%*?&,._-]{8,12}/;
+let regExPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&,._-])[A-Za-z\d$@$!%*?&,._-]{6,12}/;
 
 
 module.exports = [
@@ -48,12 +48,12 @@ module.exports = [
             return true
         }).withMessage('Las contraseñas no coinciden'),
 
-    check('identifyid')
-        .notEmpty().withMessage('Tu DNI es obligatorio').bail().isNumeric({ no_symbols: true }).withMessage('Ingresa tu DNI sin espacios, puntos o guiones').bail().isLength({ min: 7, max: 9 }).withMessage('Tu DNI debe ser de 7 u 9 caracteres').bail(),
+   /*  check('identifyid')
+        .notEmpty().withMessage('Tu DNI es obligatorio').bail().isNumeric({ no_symbols: true }).withMessage('Ingresa tu DNI sin espacios, puntos o guiones').bail().isLength({ min: 7, max: 9 }).withMessage('Tu DNI debe ser de 7 u 9 caracteres').bail(), 
 
     check('birthdate')
-        .notEmpty()/* .isDate({ format: 'DD-MM-YYYY' }).isAfter('31-12-1909') */
-        .withMessage('Debes ingresar una fecha de nacimiento válida (del año 1910 en adelante)'),
+        .notEmpty()/* .isDate({ format: 'DD-MM-YYYY' }).isAfter('31-12-1909')
+        .withMessage('Debes ingresar una fecha de nacimiento válida (del año 1910 en adelante)'),*/
 
     check('terms')
         .notEmpty()/* .equals('on') */.withMessage('Debes aceptar los términos y condiciones'),
