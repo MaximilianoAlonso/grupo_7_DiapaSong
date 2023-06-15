@@ -7,7 +7,7 @@ const containerProducts = $("#container-products");
 const countProduct = document.getElementById("countProduct");
 
 
-const apiGetProducts = "http://localhost:3000/api/products";
+const apiGetProducts = "http://diapasong.onrender.com/api/products";
 
 
 
