@@ -14,7 +14,6 @@
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
-    "drift-zoom": "^1.5.1",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "express-session": "^1.17.3",
@@ -24,12 +23,8 @@
     "method-override": "^3.0.0",
     "morgan": "~1.9.1",
     "multer": "^1.4.5-lts.1",
-    "mysql2": "^2.3.3",
-    "nodemon": "^2.0.20",
-    "passport": "^0.6.0",
-    "passport-google-oauth": "^2.0.0",
-    "sequelize": "^6.31.0",
-    "sequelize-cli": "^6.6.0"
+    "mysql2": "^2.3.3"
+
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.3"
