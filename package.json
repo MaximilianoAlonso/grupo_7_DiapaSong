@@ -8,14 +8,7 @@
     "db:reset": "sequelize db:migrate:undo:all & sequelize db:migrate & sequelize db:seed:all"
   },
   "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "ejs": "~2.6.1",
-    "express": "~4.16.1",
-    "http-errors": "~1.6.3",
-    "lru-cache": "^9.1.1",
-    "method-override": "^3.0.0",
-    "morgan": "~1.9.1"
-
+   
   },
   "devDependencies": {
 
