@@ -1,6 +1,13 @@
 require("dotenv").config();
 const createError = require('http-errors');
 const express = require('express');
+
+const { v4 } = require('uuid');
+
+app.get('/', (req, res) => {
+  res.send('Hello, World!');
+});
+
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
